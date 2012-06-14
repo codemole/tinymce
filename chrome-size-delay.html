@@ -11,7 +11,7 @@
     }
 
     function testPopupSize() {
-      var ww = window.open('test_js_popup.php', 'testest', 'width=450,height=400,left=495,top=250');
+      var ww = window.open(document.location, 'testest', 'width=450,height=400,left=495,top=250');
 
       ww.addEventListener('load', function() {
         window.setTimeout(function() {
