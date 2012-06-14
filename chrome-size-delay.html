@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <title>Popup dimensions delay in Chrome</title>
+  <script>
+    function repeatPopup() {
+      console.log('Starting popup test..');
+      iter = 50;
+      sizeCheckDelay = 10;
+      testPopupSize();
+    }
+
+    function testPopupSize() {
+      var ww = window.open('test_js_popup.php', 'testest', 'width=450,height=400,left=495,top=250');
+
+      ww.addEventListener('load', function() {
+        window.setTimeout(function() {
+          console.log('popup loaded. res: ' + ww.innerWidth + 'x' + ww.innerHeight);
+          if (ww.innerWidth != 450 || ww.innerHeight != 400) {
+            document.write('<em>Popup size mismatch.</em><br> Declared res: ' + ww.innerWidth + 'x' + ww.innerHeight + ', expected: 450x400<br>');
+            iter = 0;
+          } else {
+            --iter;
+          }
+          ww.close();
+
+          console.log('iter: ' + iter);
+
+          if (iter) {
+            window.setTimeout(testPopupSize, 50);
+          } else {
+            console.log('Popup test done.');
+            document.write('Popup test done<br>');
+          }
+        }, sizeCheckDelay);
+      }, false);
+    }
+  </script>
+</head>
+<body>
+  <a href="#" onclick="repeatPopup(); return false;" title="what">Run popup test</a>
+  <em style="display: block">Note: Chrome popup blocker might prevent popups from being created. It needs to be disabled to run successfully</em>
+</body>
+</html>
